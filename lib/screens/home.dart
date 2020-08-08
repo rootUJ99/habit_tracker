@@ -6,26 +6,38 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  Map args = {};
   List _todos = [];
-  int _number = 0;
   void _incrementCounter() {
-    Navigator.pushNamed(context, '/add', arguments: {
-      'todoList': _todos,
-    });
+    Navigator.pushNamed(context, '/add');
+    // setState(() {
+    //   _todos.add(_number++);
+    //   print('_todos $_todos');
+    // });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    print("yo => ${args['todos']}");
     setState(() {
-      print('yes it is working');
-      _todos.add(_number++);
-      print(_todos);
+      _todos.add(args['todos']);
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    args = args.isNotEmpty ? args : ModalRoute.of(context).settings.arguments;
+    print("yo => ${args['todos']}");
     return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[],
+          children: <Widget>[
+            // ListView(
+            //   children: <Widget>[],
+            // )
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
