@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>775104707497-msjdu0777cq938pi5ac4uj13h29as380.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.775104707497-msjdu0777cq938pi5ac4uj13h29as380</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDGDGgb84hDYG9vSC81Tp86mufQcJfmJzc</string>
+	<key>GCM_SENDER_ID</key>
+	<string>775104707497</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.rootujcorp.habbit-tracker</string>
+	<key>PROJECT_ID</key>
+	<string>habbit-tracker-98c9d</string>
+	<key>STORAGE_BUCKET</key>
+	<string>habbit-tracker-98c9d.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:775104707497:ios:a1a704fc0986e3507de2b8</string>
+	<key>DATABASE_URL</key>
+	<string>https://habbit-tracker-98c9d.firebaseio.com</string>
+</dict>
+</plist>

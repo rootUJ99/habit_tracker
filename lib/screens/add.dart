@@ -15,7 +15,7 @@ class _AddTodoState extends State<AddTodo> {
   }
 
   void _goBack() {
-    Navigator.pushNamed(context, '/', arguments: {'todos': _todos});
+    Navigator.pushNamed(context, '/', arguments: _todos);
   }
 
   @override
