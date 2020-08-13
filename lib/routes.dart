@@ -12,13 +12,11 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => AddTodo());
       case '/':
         // Validation of correct data type
-        if (args is List) {
-          return MaterialPageRoute(
-            builder: (_) => MyHomePage(
-              data: args,
-            ),
-          );
-        }
+        // if (args is List) {
+        return MaterialPageRoute(
+          builder: (_) => MyHomePage(data: args),
+        );
+        // }
         // If args is not of the correct type, return an error page.
         // You can also throw an exception while in development.
         return _errorRoute();

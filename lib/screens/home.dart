@@ -32,18 +32,16 @@ class _MyHomePageState extends State<MyHomePage> {
     // });
   }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   print("yo => ${args['todos']}");
-  //   setState(() {
-  //     _todos.add(args['todos']);
-  //   });
-  // }
+  void handleTap() {
+    print('Yeah you are tapping shit outa it');
+  }
+
+  void handleLongPress() {
+    print('You are pressing it tooo hard');
+  }
 
   @override
   Widget build(BuildContext context) {
-    print("yo => ${data}");
     return Scaffold(
       body: Center(
         child: Container(
@@ -53,15 +51,21 @@ class _MyHomePageState extends State<MyHomePage> {
             children: <Widget>[
               // args['todos'] != null?
               Column(
-                  children: data1
-                      .map<Widget>((item) => Card(
-                              child: Container(
-                            margin: EdgeInsets.all(20.0),
-                            child: new Text(item),
-                            width: MediaQuery.of(context).size.width * 0.8,
-                            height: 50,
-                          )))
-                      .toList())
+                  children: widget.data != null
+                      ? widget.data
+                          .map<Widget>((item) => Card(
+                              child: InkWell(
+                                  onTap: handleTap,
+                                  onLongPress: handleLongPress,
+                                  child: Container(
+                                    margin: EdgeInsets.all(20.0),
+                                    child: new Text(item),
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.8,
+                                    height: 50,
+                                  ))))
+                          .toList()
+                      : [])
               // : const Text('Empty'),
             ],
           )),
