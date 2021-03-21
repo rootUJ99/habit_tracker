@@ -11,7 +11,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   Map args = {};
-  List _todos = [];
+  List _todos = <Map>[];
   List data1 = <String>[
     'ichi',
     'ni',
@@ -24,6 +24,16 @@ class _MyHomePageState extends State<MyHomePage> {
     'ku',
     'ju',
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    print('yes it works');
+    if (widget.data != null) {
+      _todos.add({'uuid': 'spmthing', 'text': 'yes sure'});
+    }
+  }
+
   void _incrementCounter() {
     Navigator.pushNamed(context, '/add');
     // setState(() {
@@ -49,10 +59,9 @@ class _MyHomePageState extends State<MyHomePage> {
           // mainAxisAlignment: MainAxisAlignment.center,
           child: (ListView(
             children: <Widget>[
-              // args['todos'] != null?
               Column(
-                  children: widget.data != null
-                      ? widget.data
+                  children: _todos != null
+                      ? _todos
                           .map<Widget>((item) => Card(
                               child: InkWell(
                                   onTap: handleTap,

@@ -10,12 +10,13 @@ class AddTodo extends StatefulWidget {
 class _AddTodoState extends State<AddTodo> {
   var uuid = Uuid();
   List _todos = [];
+  Map<String, String> item;
   final myController = TextEditingController();
   void _addTodo() {
     setState(() async {
-      // {'text': myController.text, 'id': uuid.v4()}
+      item = {'text': myController.text, 'id': uuid.v4()};
       _todos.add(myController.text);
-      await Navigator.pushNamed(context, '/', arguments: _todos);
+      await Navigator.pushNamed(context, '/', arguments: item);
     });
   }
 
