@@ -4,20 +4,22 @@ class Button extends StatelessWidget {
   final Function onPressed;
   final String title;
 
-  Button({
+  const Button({
     @required this.onPressed,
     @required this.title,
   });
 
   @override
   Widget build(BuildContext context) {
-    return RaisedButton(
+    return ElevatedButton(
       child: Text(title, style: (TextStyle(fontSize: 20))),
       onPressed: onPressed,
-      color: Colors.purple,
-      textColor: Colors.white,
-      shape:
-          RoundedRectangleBorder(borderRadius: new BorderRadius.circular(50.0)),
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>(Colors.purple),
+        foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(50.0))),
+      ),
     );
   }
 }
