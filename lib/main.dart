@@ -13,17 +13,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       initialRoute: '/',
-      // routes: {
-      //   '/': (context) => MyHomePage(),
-      //   '/add': (context) => AddTodo(),
-      // },
       onGenerateRoute: RouteGenerator.generateRoute,
       debugShowCheckedModeBanner: false,
       title: 'Habit Tracker',
       theme: ThemeData(
-        primarySwatch: Colors.purple,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
+          colorSchemeSeed: Color.fromARGB(255, 40, 54, 122),
+          useMaterial3: true),
     );
   }
 }

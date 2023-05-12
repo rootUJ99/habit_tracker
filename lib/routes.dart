@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:habbit_tracker/screens/add.dart';
+import 'package:habbit_tracker/screens/add_edit.dart';
 import 'package:habbit_tracker/screens/home.dart';
 
 class RouteGenerator {

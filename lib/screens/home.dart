@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({
-    @required this.data,
+    required this.data,
   });
-  final List data;
+  final Object? data;
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -12,18 +12,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   Map args = {};
   List _todos = <Map>[];
-  List data1 = <String>[
-    'ichi',
-    'ni',
-    'san',
-    'shi',
-    'go',
-    'roku',
-    'shichi',
-    'hachi',
-    'ku',
-    'ju',
-  ];
 
   @override
   void initState() {
@@ -80,11 +68,12 @@ class _MyHomePageState extends State<MyHomePage> {
           )),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+        // tooltip: 'Increment',
+        label: Text("Add Habit"),
+        icon: Icon(Icons.add),
+      ),
     );
   }
 }
