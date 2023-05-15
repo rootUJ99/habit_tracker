@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Habit Tracker',
       theme: ThemeData(
-          colorSchemeSeed: Color.fromARGB(255, 40, 54, 122),
+          colorSchemeSeed: const Color.fromARGB(255, 40, 54, 122),
           useMaterial3: true),
     );
   }
