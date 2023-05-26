@@ -1,35 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:habbit_tracker/components/card.dart';
+import 'package:habbit_tracker/provider/hobby_provider.dart';
+import 'package:provider/provider.dart';
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({
-    required this.data,
-  });
-  final Object? data;
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  Map args = {};
-  List _todos = <Map>[];
-
-  @override
-  void initState() {
-    super.initState();
-    print('yes it works');
-    if (widget.data != null) {
-      _todos.add({'uuid': 'spmthing', 'text': 'yes sure'});
-    }
-  }
-
-  void _incrementCounter() {
-    Navigator.pushNamed(context, '/add');
-    // setState(() {
-    //   _todos.add(_number++);
-    //   print('_todos $_todos');
-    // });
-  }
-
+class MyHomePage extends StatelessWidget {
+  const MyHomePage({super.key});
   void handleTap() {
     print('Yeah you are tapping shit outa it');
   }
@@ -40,30 +15,31 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    void _incrementCounter() {
+      Navigator.pushNamed(context, '/add');
+    }
+
     return Scaffold(
       body: Center(
         child: Container(
-          margin: EdgeInsets.all(20.0),
+          margin: const EdgeInsets.all(20.0),
           // mainAxisAlignment: MainAxisAlignment.center,
           child: (ListView(
             children: <Widget>[
               Column(
-                  children: _todos != null
-                      ? _todos
-                          .map<Widget>((item) => Card(
-                              child: InkWell(
-                                  onTap: handleTap,
-                                  onLongPress: handleLongPress,
-                                  child: Container(
-                                    margin: EdgeInsets.all(20.0),
-                                    child: new Text(item),
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.8,
-                                    height: 50,
-                                  ))))
-                          .toList()
-                      : [])
-              // : const Text('Empty'),
+                children: context
+                    .watch<Habits>()
+                    .habits
+                    .map(
+                      (item) => HabitCard(
+                        name: item['name'] ?? '',
+                        description: item['description'] ?? '',
+                        repeatTime: item['repeatTime'] ?? '',
+                        duration: item['duration'] ?? '',
+                      ),
+                    )
+                    .toList(),
+              )
             ],
           )),
         ),
@@ -71,8 +47,8 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _incrementCounter,
         // tooltip: 'Increment',
-        label: Text("Add Habit"),
-        icon: Icon(Icons.add),
+        label: const Text("add habit"),
+        icon: const Icon(Icons.add),
       ),
     );
   }

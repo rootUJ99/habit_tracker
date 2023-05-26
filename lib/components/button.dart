@@ -5,6 +5,7 @@ class Button extends StatelessWidget {
   final String title;
 
   const Button({
+    super.key,
     required this.onPressed,
     required this.title,
   });
@@ -12,7 +13,6 @@ class Button extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      child: Text(title, style: (TextStyle(fontSize: 20))),
       onPressed: () => onPressed(),
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all<Color>(Colors.purple),
@@ -20,6 +20,7 @@ class Button extends StatelessWidget {
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(50.0))),
       ),
+      child: Text(title, style: (const TextStyle(fontSize: 20))),
     );
   }
 }

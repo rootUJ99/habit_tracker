@@ -14,7 +14,7 @@ class RouteGenerator {
         // Validation of correct data type
         // if (args is List) {
         return MaterialPageRoute(
-          builder: (_) => MyHomePage(data: args),
+          builder: (_) => MyHomePage(),
         );
         // }
         // If args is not of the correct type, return an error page.

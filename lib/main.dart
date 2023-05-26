@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
-// import 'package:habbit_tracker/screens/add.dart';
-// import 'package:habbit_tracker/screens/home.dart';
+import 'package:habbit_tracker/provider/hobby_provider.dart';
 import 'package:habbit_tracker/routes.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => Habits()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
