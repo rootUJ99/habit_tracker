@@ -20,29 +20,28 @@ class MyHomePage extends StatelessWidget {
     }
 
     return Scaffold(
-      body: Center(
-        child: Container(
-          margin: const EdgeInsets.all(20.0),
-          // mainAxisAlignment: MainAxisAlignment.center,
-          child: (ListView(
-            children: <Widget>[
-              Column(
-                children: context
-                    .watch<Habits>()
-                    .habits
-                    .map(
-                      (item) => HabitCard(
-                        name: item['name'] ?? '',
-                        description: item['description'] ?? '',
-                        repeatTime: item['repeatTime'] ?? '',
-                        duration: item['duration'] ?? '',
-                      ),
-                    )
-                    .toList(),
-              )
-            ],
-          )),
-        ),
+      appBar: AppBar(title: const Text('My Habits')),
+      body: Container(
+        margin: const EdgeInsets.all(10.0),
+        // mainAxisAlignment: MainAxisAlignment.center,
+        child: (ListView(
+          children: <Widget>[
+            Column(
+              children: context
+                  .watch<Habits>()
+                  .habits
+                  .map(
+                    (item) => HabitCard(
+                      name: item['name'] ?? '',
+                      description: item['description'] ?? '',
+                      repeatTime: item['repeatTime'] ?? '',
+                      duration: item['duration'] ?? '',
+                    ),
+                  )
+                  .toList(),
+            )
+          ],
+        )),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _incrementCounter,

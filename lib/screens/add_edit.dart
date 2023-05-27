@@ -27,6 +27,14 @@ class _AddTodoState extends State<AddTodo> {
     super.dispose();
   }
 
+  String getTime(TimeOfDay time) {
+    final period = time.period.name;
+    final min = time.minute;
+    final hourPeriod = time.hourOfPeriod;
+
+    return '$hourPeriod $min $period';
+  }
+
   final Map<String, dynamic> _formControllers = {
     'name': TextEditingController(),
     'description': TextEditingController(),
@@ -148,7 +156,7 @@ class _AddTodoState extends State<AddTodo> {
                     context.read<Habits>().addHabit({
                       'name': _formControllers['name']!.text,
                       'description': _formControllers['description']!.text,
-                      'repeatTime': _formControllers['repeatTime']!.toString(),
+                      'repeatTime': getTime(_formControllers['repeatTime']),
                       'duration': _formControllers['duration']['value']
                     });
                     Navigator.pop(context);
