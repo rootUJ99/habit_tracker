@@ -4,11 +4,11 @@ class Habits with ChangeNotifier, DiagnosticableTreeMixin {
   // Map<String, String>_habit = {
 
   // }
-  final List<Map<String, String>> _habits = [];
+  final List<Map<String, dynamic>> _habits = [];
 
-  List<Map<String, String>> get habits => _habits;
+  List<Map<String, dynamic>> get habits => _habits;
 
-  void addHabit(Map<String, String> item) {
+  void addHabit(Map<String, dynamic> item) {
     _habits.add(item);
     notifyListeners();
   }

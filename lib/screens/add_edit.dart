@@ -4,21 +4,14 @@ import 'package:provider/provider.dart';
 // import 'package:habbit_tracker/components/button.dart';
 
 class AddTodo extends StatefulWidget {
+  AddTodo({super.key, this.item});
+  Object? item;
   @override
   _AddTodoState createState() => _AddTodoState();
 }
 
 class _AddTodoState extends State<AddTodo> {
-  List _todos = [];
-  late Map<String, String> item;
   final myController = TextEditingController();
-  // void _addTodo() {
-  //   setState(() async {
-  //     item = {'text': myController.text};
-  //     _todos.add(myController.text);
-  //     await Navigator.pushNamed(context, '/', arguments: item);
-  //   });
-  // }
   final _addEditForm = GlobalKey<FormState>();
 
   @override
@@ -55,7 +48,9 @@ class _AddTodoState extends State<AddTodo> {
 
   @override
   Widget build(BuildContext context) {
-    print(_todos);
+    print('${widget.item}');
+    Object? item = ModalRoute.of(context)!.settings.arguments;
+    print('item $item');
     return Scaffold(
       appBar: AppBar(
         title: const Text('add habit'),
@@ -151,13 +146,13 @@ class _AddTodoState extends State<AddTodo> {
                       ${_formControllers['name']!.text}
                       ${_formControllers['description']!.text}
                       ${_formControllers['repeatTime']!.toString()}
-                      ${_formControllers['duration']['value']}
+                      ${_formControllers['duration']['key']}
                     """);
                     context.read<Habits>().addHabit({
                       'name': _formControllers['name']!.text,
                       'description': _formControllers['description']!.text,
-                      'repeatTime': getTime(_formControllers['repeatTime']),
-                      'duration': _formControllers['duration']['value']
+                      'repeatTime': _formControllers['repeatTime'],
+                      'duration': _formControllers['duration']['key']
                     });
                     Navigator.pop(context);
                   },

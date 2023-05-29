@@ -36,6 +36,8 @@ class MyHomePage extends StatelessWidget {
                       description: item['description'] ?? '',
                       repeatTime: item['repeatTime'] ?? '',
                       duration: item['duration'] ?? '',
+                      onTap: () =>
+                          Navigator.pushNamed(context, '/add', arguments: item),
                     ),
                   )
                   .toList(),

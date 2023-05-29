@@ -9,17 +9,14 @@ class RouteGenerator {
 
     switch (settings.name) {
       case '/add':
-        return MaterialPageRoute(builder: (_) => AddTodo());
+        return MaterialPageRoute(builder: (_) => AddTodo(item: args));
       case '/':
         // Validation of correct data type
         // if (args is List) {
         return MaterialPageRoute(
-          builder: (_) => MyHomePage(),
+          builder: (_) => const MyHomePage(),
         );
-        // }
-        // If args is not of the correct type, return an error page.
-        // You can also throw an exception while in development.
-        return _errorRoute();
+      // }
       default:
         // If there is no such named route in the switch statement, e.g. /third
         return _errorRoute();
@@ -30,9 +27,9 @@ class RouteGenerator {
     return MaterialPageRoute(builder: (_) {
       return Scaffold(
         appBar: AppBar(
-          title: Text('Error'),
+          title: const Text('Error'),
         ),
-        body: Center(
+        body: const Center(
           child: Text('ERROR'),
         ),
       );
