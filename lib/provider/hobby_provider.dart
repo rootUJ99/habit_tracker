@@ -1,15 +1,24 @@
 import 'package:flutter/foundation.dart';
 
+typedef DynamicMap = Map<String, dynamic>;
+
 class Habits with ChangeNotifier, DiagnosticableTreeMixin {
   // Map<String, String>_habit = {
 
   // }
-  final List<Map<String, dynamic>> _habits = [];
+  final List<DynamicMap> _habits = [];
 
-  List<Map<String, dynamic>> get habits => _habits;
+  List<DynamicMap> get habits => _habits;
 
-  void addHabit(Map<String, dynamic> item) {
+  void addHabit(DynamicMap item) {
     _habits.add(item);
+    notifyListeners();
+  }
+
+  void updateHabit(DynamicMap item) {
+    int index = _habits.indexWhere((element) => element['id'] == item['id']);
+    _habits.removeAt(index);
+    _habits.insert(index, item);
     notifyListeners();
   }
 

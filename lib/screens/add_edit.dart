@@ -1,11 +1,17 @@
+import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
 import 'package:habbit_tracker/provider/hobby_provider.dart';
 import 'package:provider/provider.dart';
 // import 'package:habbit_tracker/components/button.dart';
 
+typedef ListMapString = List<Map<String, String>>;
+
+typedef MapDynamic = Map<String, dynamic>;
+
 class AddTodo extends StatefulWidget {
   AddTodo({super.key, this.item});
-  Object? item;
+  Map<String, dynamic>? item;
   @override
   _AddTodoState createState() => _AddTodoState();
 }
@@ -28,6 +34,14 @@ class _AddTodoState extends State<AddTodo> {
     return '$hourPeriod $min $period';
   }
 
+  final TimeOfDay defaultTime =
+      TimeOfDay(hour: TimeOfDay.now().hour, minute: 00);
+
+  final Map<String, String> defaultDuration = {
+    'key': '1hour',
+    'value': '1 hour',
+  };
+
   final Map<String, dynamic> _formControllers = {
     'name': TextEditingController(),
     'description': TextEditingController(),
@@ -38,7 +52,7 @@ class _AddTodoState extends State<AddTodo> {
     },
   };
 
-  final List<Map<String, String>> _duration = [
+  final ListMapString _duration = [
     {'key': '15mins', 'value': '15 mins'},
     {'key': '30mins', 'value': '30 mins'},
     {'key': '1hour', 'value': '1 hour'},
@@ -46,11 +60,41 @@ class _AddTodoState extends State<AddTodo> {
     {'key': '2hours', 'value': '2 hour'},
   ];
 
+  MapDynamic createHabitMap() {
+    return {
+      'name': _formControllers['name']!.text,
+      'description': _formControllers['description']!.text,
+      'repeatTime': _formControllers['repeatTime'],
+      'duration': _formControllers['duration']['key'],
+      'id': widget.item?['id'] ?? UniqueKey().toString(),
+    };
+  }
+
+  void addHabit() {
+    context.read<Habits>().addHabit(createHabitMap());
+  }
+
+  void editHabit() {
+    context.read<Habits>().updateHabit(createHabitMap());
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _formControllers['name'].text = widget.item?['name'] ?? '';
+    _formControllers['description'].text = widget.item?['description'] ?? '';
+    _formControllers['repeatTime'] = widget.item?['repeatTime'] ?? defaultTime;
+    _formControllers['duration'] = _duration.firstWhere(
+      (it) => it['key'] == widget.item?['duration'],
+      orElse: () => defaultDuration,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    print('${widget.item}');
-    Object? item = ModalRoute.of(context)!.settings.arguments;
-    print('item $item');
+    // if (widget.item != null && widget.item!.containsKey('name')) {
+    // print('${widget.item?['name']}');
+    // }
     return Scaffold(
       appBar: AppBar(
         title: const Text('add habit'),
@@ -148,15 +192,14 @@ class _AddTodoState extends State<AddTodo> {
                       ${_formControllers['repeatTime']!.toString()}
                       ${_formControllers['duration']['key']}
                     """);
-                    context.read<Habits>().addHabit({
-                      'name': _formControllers['name']!.text,
-                      'description': _formControllers['description']!.text,
-                      'repeatTime': _formControllers['repeatTime'],
-                      'duration': _formControllers['duration']['key']
-                    });
+                    if (widget.item.isNull) {
+                      addHabit();
+                    } else {
+                      editHabit();
+                    }
                     Navigator.pop(context);
                   },
-                  child: const Text('add habit'))
+                  child: const Text('save habit'))
             ],
           ),
         ),

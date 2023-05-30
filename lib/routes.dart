@@ -5,7 +5,7 @@ import 'package:habbit_tracker/screens/home.dart';
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     // Getting arguments passed in while calling Navigator.pushNamed
-    final args = settings.arguments;
+    final args = settings.arguments as Map<String, dynamic>?;
 
     switch (settings.name) {
       case '/add':
