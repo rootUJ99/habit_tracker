@@ -3,6 +3,8 @@ import 'dart:js_interop';
 import 'package:flutter/material.dart';
 import 'package:habbit_tracker/provider/hobby_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 // import 'package:habbit_tracker/components/button.dart';
 
 typedef ListMapString = List<Map<String, String>>;
@@ -70,12 +72,12 @@ class _AddTodoState extends State<AddTodo> {
     };
   }
 
-  void addHabit() {
-    context.read<Habits>().addHabit(createHabitMap());
+  void addHabit(CollectionReference habitsCol) {
+    context.read<Habits>().addHabit(createHabitMap(), habitsCol);
   }
 
-  void editHabit() {
-    context.read<Habits>().updateHabit(createHabitMap());
+  void editHabit(CollectionReference habitsCol) {
+    context.read<Habits>().updateHabit(createHabitMap(), habitsCol);
   }
 
   @override
@@ -95,6 +97,9 @@ class _AddTodoState extends State<AddTodo> {
     // if (widget.item != null && widget.item!.containsKey('name')) {
     // print('${widget.item?['name']}');
     // }
+    CollectionReference habits =
+        FirebaseFirestore.instance.collection('habits');
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('add habit'),
@@ -193,9 +198,9 @@ class _AddTodoState extends State<AddTodo> {
                       ${_formControllers['duration']['key']}
                     """);
                     if (widget.item.isNull) {
-                      addHabit();
+                      addHabit(habits);
                     } else {
-                      editHabit();
+                      editHabit(habits);
                     }
                     Navigator.pop(context);
                   },

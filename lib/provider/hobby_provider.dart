@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
 typedef DynamicMap = Map<String, dynamic>;
@@ -10,12 +11,16 @@ class Habits with ChangeNotifier, DiagnosticableTreeMixin {
 
   List<DynamicMap> get habits => _habits;
 
-  void addHabit(DynamicMap item) {
-    _habits.add(item);
-    notifyListeners();
+  void addHabit(DynamicMap item, CollectionReference habitCol) {
+    habitCol.add({...item, 'repeatTime': item['repeatTime'].toString()}).then(
+        (value) {
+      _habits.add(item);
+      notifyListeners();
+    }).catchError((err) => print(err));
+    // _habits.add(item);
   }
 
-  void updateHabit(DynamicMap item) {
+  void updateHabit(DynamicMap item, CollectionReference habitCol) {
     int index = _habits.indexWhere((element) => element['id'] == item['id']);
     _habits.removeAt(index);
     _habits.insert(index, item);

@@ -1,35 +1,77 @@
 {
   "project_info": {
-    "project_number": "775104707497",
-    "firebase_url": "https://habbit-tracker-98c9d.firebaseio.com",
-    "project_id": "habbit-tracker-98c9d",
-    "storage_bucket": "habbit-tracker-98c9d.appspot.com"
+    "project_number": "432339124188",
+    "project_id": "flutter-dodo",
+    "storage_bucket": "flutter-dodo.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:775104707497:android:81d480081929b3157de2b8",
+        "mobilesdk_app_id": "1:432339124188:android:c7f57a40b32e1a55725919",
         "android_client_info": {
-          "package_name": "com.rootujcorp.habbit_tracker"
+          "package_name": "com.example.flutter_todo"
         }
       },
       "oauth_client": [
         {
-          "client_id": "775104707497-ocg7knkobujffc1v5gam1mgpv5lui03v.apps.googleusercontent.com",
+          "client_id": "432339124188-5q2neb13mpbakb1to6ukkgi69se53545.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCgEo7brpKmyWHZnEVPvhtLVwbYz2ASycw"
+          "current_key": "AIzaSyD6jMMR-teNiZoFV31dxaE94BWs47QUdmk"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "775104707497-ocg7knkobujffc1v5gam1mgpv5lui03v.apps.googleusercontent.com",
+              "client_id": "432339124188-5q2neb13mpbakb1to6ukkgi69se53545.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "432339124188-88ghubgh5db9m69aqrad44gslhloo393.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.flutterTodo"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:432339124188:android:2c5755797ae92889725919",
+        "android_client_info": {
+          "package_name": "com.rootujcorp.habbit_tracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "432339124188-5q2neb13mpbakb1to6ukkgi69se53545.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6jMMR-teNiZoFV31dxaE94BWs47QUdmk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "432339124188-5q2neb13mpbakb1to6ukkgi69se53545.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "432339124188-88ghubgh5db9m69aqrad44gslhloo393.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.flutterTodo"
+              }
             }
           ]
         }
