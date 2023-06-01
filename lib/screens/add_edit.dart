@@ -196,6 +196,7 @@ class _AddTodoState extends State<AddTodo> {
                       ${_formControllers['description']!.text}
                       ${_formControllers['repeatTime']!.toString()}
                       ${_formControllers['duration']['key']}
+                      ${_formControllers['id']}
                     """);
                     if (widget.item.isNull) {
                       addHabit(habits);

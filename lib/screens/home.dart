@@ -16,6 +16,9 @@ class MyHomePage extends StatelessWidget {
       Navigator.pushNamed(context, '/add');
     }
 
+    TimeOfDay convertToTimeOfDay(String s) => TimeOfDay(
+        hour: int.parse(s.split(":")[0]), minute: int.parse(s.split(":")[1]));
+
     return Scaffold(
       appBar: AppBar(title: const Text('My Habits')),
       body: Container(
@@ -25,24 +28,29 @@ class MyHomePage extends StatelessWidget {
             stream: habitsSnap,
             builder:
                 (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-              print('${snapshot.data?.docs} this is data');
+              if (snapshot.hasError ||
+                  snapshot.connectionState == ConnectionState.waiting) {
+                return const Text('no no');
+              }
+              print('${snapshot.data?.docs.map((e) => e.data())} this is data');
               return (ListView(
-                children: <Widget>[
+                children: [
                   Column(
-                    children: context
-                        .watch<Habits>()
-                        .habits
-                        .map(
-                          (item) => HabitCard(
-                            name: item['name'] ?? '',
-                            description: item['description'] ?? '',
-                            repeatTime: item['repeatTime'] ?? '',
-                            duration: item['duration'] ?? '',
-                            onTap: () => Navigator.pushNamed(context, '/add',
-                                arguments: item),
-                          ),
-                        )
-                        .toList(),
+                    children:
+                        snapshot.data?.docs.map((DocumentSnapshot document) {
+                      Map<String, dynamic> item =
+                          document.data()! as Map<String, dynamic>;
+                      return HabitCard(
+                        name: item['name'] ?? '',
+                        description: item['description'] ?? '',
+                        repeatTime:
+                            TimeOfDay(hour: TimeOfDay.now().hour, minute: 00),
+                        // convertToTimeOfDay(item['repeatTime'] ?? '') ?? '',
+                        duration: item['duration'] ?? '',
+                        onTap: () => Navigator.pushNamed(context, '/add',
+                            arguments: item),
+                      );
+                    }).toList() as List<Widget>,
                   )
                 ],
               ));

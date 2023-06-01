@@ -12,8 +12,8 @@ class Habits with ChangeNotifier, DiagnosticableTreeMixin {
   List<DynamicMap> get habits => _habits;
 
   void addHabit(DynamicMap item, CollectionReference habitCol) {
-    habitCol.add({...item, 'repeatTime': item['repeatTime'].toString()}).then(
-        (value) {
+    habitCol.doc(item['id']).set(
+        {...item, 'repeatTime': item['repeatTime'].toString()}).then((value) {
       _habits.add(item);
       notifyListeners();
     }).catchError((err) => print(err));
@@ -21,6 +21,12 @@ class Habits with ChangeNotifier, DiagnosticableTreeMixin {
   }
 
   void updateHabit(DynamicMap item, CollectionReference habitCol) {
+    habitCol
+        .doc(item['id'])
+        .set({...item, 'repeatTime': item['repeatTime'].toString()})
+        .then((value) {})
+        .catchError((err) => print(err));
+
     int index = _habits.indexWhere((element) => element['id'] == item['id']);
     _habits.removeAt(index);
     _habits.insert(index, item);
