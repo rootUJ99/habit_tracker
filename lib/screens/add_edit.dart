@@ -36,8 +36,7 @@ class _AddTodoState extends State<AddTodo> {
     return '$hourPeriod $min $period';
   }
 
-  final TimeOfDay defaultTime =
-      TimeOfDay(hour: TimeOfDay.now().hour, minute: 00);
+  final int defaultTime = DateTime.now().millisecondsSinceEpoch;
 
   final Map<String, String> defaultDuration = {
     'key': '1hour',
@@ -47,7 +46,7 @@ class _AddTodoState extends State<AddTodo> {
   final Map<String, dynamic> _formControllers = {
     'name': TextEditingController(),
     'description': TextEditingController(),
-    'repeatTime': TimeOfDay(hour: TimeOfDay.now().hour, minute: 00),
+    'repeatTime': DateTime.now().microsecondsSinceEpoch,
     'duration': {
       'key': '1hour',
       'value': '1 hour',
@@ -78,6 +77,19 @@ class _AddTodoState extends State<AddTodo> {
 
   void editHabit(CollectionReference habitsCol) {
     context.read<Habits>().updateHabit(createHabitMap(), habitsCol);
+  }
+
+  TimeOfDay convertToTimeofDay(int timeStampEpoch) {
+    final dateTime = DateTime.fromMicrosecondsSinceEpoch(timeStampEpoch);
+    return TimeOfDay.fromDateTime(dateTime);
+  }
+
+  int convertToMicroseconds(TimeOfDay timeOfDay) {
+    final dateTimenow = DateTime.now();
+    final dateTimeEpoch = DateTime(dateTimenow.year, dateTimenow.month,
+            dateTimenow.day, timeOfDay.hour, timeOfDay.minute)
+        .microsecondsSinceEpoch;
+    return dateTimeEpoch;
   }
 
   @override
@@ -139,7 +151,8 @@ class _AddTodoState extends State<AddTodo> {
                         onPressed: () async {
                           TimeOfDay? selectedTimeRTL = await showTimePicker(
                             context: context,
-                            initialTime: _formControllers['repeatTime'],
+                            initialTime: convertToTimeofDay(
+                                _formControllers['repeatTime']),
                             initialEntryMode: TimePickerEntryMode.inputOnly,
                             builder: (BuildContext context, Widget? child) {
                               return Directionality(
@@ -151,7 +164,8 @@ class _AddTodoState extends State<AddTodo> {
                           print(selectedTimeRTL);
                           if (selectedTimeRTL != null) {
                             setState(() {
-                              _formControllers['repeatTime'] = selectedTimeRTL;
+                              _formControllers['repeatTime'] =
+                                  convertToMicroseconds(selectedTimeRTL);
                             });
                           }
                         },
