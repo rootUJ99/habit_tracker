@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:habbit_tracker/provider/hobby_provider.dart';
+import 'package:habbit_tracker/provider/habit_provider.dart';
 import 'package:habbit_tracker/routes.dart';
 import 'package:habbit_tracker/firebase_options.dart';
 import 'package:provider/provider.dart';

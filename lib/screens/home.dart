@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:habbit_tracker/components/card.dart';
-import 'package:habbit_tracker/provider/hobby_provider.dart';
+import 'package:habbit_tracker/provider/habit_provider.dart';
 import 'package:provider/provider.dart';
 
 class MyHomePage extends StatelessWidget {
@@ -16,8 +16,10 @@ class MyHomePage extends StatelessWidget {
       Navigator.pushNamed(context, '/add');
     }
 
-    TimeOfDay convertToTimeOfDay(String s) => TimeOfDay(
-        hour: int.parse(s.split(":")[0]), minute: int.parse(s.split(":")[1]));
+    TimeOfDay convertToTimeOfDay(String s) {
+      final dT = DateTime.fromMicrosecondsSinceEpoch(int.parse(s));
+      return TimeOfDay.fromDateTime(dT);
+    }
 
     return Scaffold(
       appBar: AppBar(title: const Text('My Habits')),
@@ -44,8 +46,7 @@ class MyHomePage extends StatelessWidget {
                         name: item['name'] ?? '',
                         description: item['description'] ?? '',
                         repeatTime:
-                            TimeOfDay(hour: TimeOfDay.now().hour, minute: 00),
-                        // convertToTimeOfDay(item['repeatTime'] ?? '') ?? '',
+                            convertToTimeOfDay(item['repeatTime'] ?? ''),
                         duration: item['duration'] ?? '',
                         onTap: () => Navigator.pushNamed(context, '/add',
                             arguments: item),

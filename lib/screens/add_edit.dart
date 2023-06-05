@@ -1,7 +1,7 @@
 import 'dart:js_interop';
 
 import 'package:flutter/material.dart';
-import 'package:habbit_tracker/provider/hobby_provider.dart';
+import 'package:habbit_tracker/provider/habit_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -36,7 +36,7 @@ class _AddTodoState extends State<AddTodo> {
     return '$hourPeriod $min $period';
   }
 
-  final int defaultTime = DateTime.now().millisecondsSinceEpoch;
+  final int defaultTime = DateTime.now().microsecondsSinceEpoch;
 
   final Map<String, String> defaultDuration = {
     'key': '1hour',
@@ -79,8 +79,11 @@ class _AddTodoState extends State<AddTodo> {
     context.read<Habits>().updateHabit(createHabitMap(), habitsCol);
   }
 
-  TimeOfDay convertToTimeofDay(int timeStampEpoch) {
-    final dateTime = DateTime.fromMicrosecondsSinceEpoch(timeStampEpoch);
+  TimeOfDay convertToTimeofDay(String timeStampEpoch) {
+    // if (timeStampEpoch is String) {
+    int ts = int.parse(timeStampEpoch);
+    // }
+    final dateTime = DateTime.fromMicrosecondsSinceEpoch(ts);
     return TimeOfDay.fromDateTime(dateTime);
   }
 
@@ -152,7 +155,7 @@ class _AddTodoState extends State<AddTodo> {
                           TimeOfDay? selectedTimeRTL = await showTimePicker(
                             context: context,
                             initialTime: convertToTimeofDay(
-                                _formControllers['repeatTime']),
+                                '${_formControllers['repeatTime']}'),
                             initialEntryMode: TimePickerEntryMode.inputOnly,
                             builder: (BuildContext context, Widget? child) {
                               return Directionality(
@@ -170,7 +173,7 @@ class _AddTodoState extends State<AddTodo> {
                           }
                         },
                         child: Text(
-                            'repeat weekly at ${_formControllers["repeatTime"].toString()}')),
+                            'repeat weekly at ${convertToTimeofDay(_formControllers["repeatTime"].toString())}')),
                   ),
                 ],
               ),
