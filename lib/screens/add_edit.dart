@@ -5,8 +5,6 @@ import 'package:habbit_tracker/provider/habit_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-// import 'package:habbit_tracker/components/button.dart';
-
 typedef ListMapString = List<Map<String, String>>;
 
 typedef MapDynamic = Map<String, dynamic>;
@@ -215,7 +213,7 @@ class _AddTodoState extends State<AddTodo> {
                       ${_formControllers['duration']['key']}
                       ${_formControllers['id']}
                     """);
-                    if (widget.item.isNull) {
+                    if (widget.item!.isNull) {
                       addHabit(habits);
                     } else {
                       editHabit(habits);
