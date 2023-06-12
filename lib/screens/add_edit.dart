@@ -1,5 +1,3 @@
-import 'dart:js_interop';
-
 import 'package:flutter/material.dart';
 import 'package:habbit_tracker/provider/habit_provider.dart';
 import 'package:provider/provider.dart';
@@ -114,6 +112,7 @@ class _AddTodoState extends State<AddTodo> {
         FirebaseFirestore.instance.collection('habits');
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('add habit'),
       ),
@@ -188,7 +187,7 @@ class _AddTodoState extends State<AddTodo> {
                     spacing: 5.0,
                     children: _duration
                         .map((item) => ChoiceChip(
-                              label: Text(item!['value'].toString()),
+                              label: Text(item['value'].toString()),
                               selected: item['key'] ==
                                   _formControllers['duration']['key'],
                               onSelected: (value) {
@@ -213,7 +212,7 @@ class _AddTodoState extends State<AddTodo> {
                       ${_formControllers['duration']['key']}
                       ${_formControllers['id']}
                     """);
-                    if (widget.item!.isNull) {
+                    if (widget.item != null) {
                       addHabit(habits);
                     } else {
                       editHabit(habits);

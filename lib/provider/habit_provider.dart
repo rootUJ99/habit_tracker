@@ -14,7 +14,7 @@ class Habits with ChangeNotifier, DiagnosticableTreeMixin {
   void addHabit(DynamicMap item, CollectionReference habitCol) {
     habitCol.doc(item['id']).set(
         {...item, 'repeatTime': item['repeatTime'].toString()}).then((value) {
-      _habits.add(item);
+      // _habits.add(item);
       notifyListeners();
     }).catchError((err) => print(err));
     // _habits.add(item);
@@ -27,9 +27,9 @@ class Habits with ChangeNotifier, DiagnosticableTreeMixin {
         .then((value) {})
         .catchError((err) => print(err));
 
-    int index = _habits.indexWhere((element) => element['id'] == item['id']);
-    _habits.removeAt(index);
-    _habits.insert(index, item);
+    // int index = _habits.indexWhere((element) => element['id'] == item['id']);
+    // _habits.removeAt(index);
+    // _habits.insert(index, item);
     notifyListeners();
   }
 
