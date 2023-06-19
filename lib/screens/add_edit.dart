@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:habbit_tracker/provider/habit_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:habbit_tracker/push_notification_handler.dart';
 
 typedef ListMapString = List<Map<String, String>>;
 
@@ -69,10 +70,14 @@ class _AddTodoState extends State<AddTodo> {
 
   void addHabit(CollectionReference habitsCol) {
     context.read<Habits>().addHabit(createHabitMap(), habitsCol);
+    LocalPushNotification.showNotification(
+        header: 'item added', body: 'habit has been added');
   }
 
   void editHabit(CollectionReference habitsCol) {
     context.read<Habits>().updateHabit(createHabitMap(), habitsCol);
+    LocalPushNotification.showNotification(
+        header: 'item updated', body: 'habit has been updated');
   }
 
   TimeOfDay convertToTimeofDay(String timeStampEpoch) {
@@ -213,9 +218,9 @@ class _AddTodoState extends State<AddTodo> {
                       ${_formControllers['id']}
                     """);
                     if (widget.item != null) {
-                      addHabit(habits);
-                    } else {
                       editHabit(habits);
+                    } else {
+                      addHabit(habits);
                     }
                     Navigator.pop(context);
                   },

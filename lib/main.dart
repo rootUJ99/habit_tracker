@@ -5,6 +5,8 @@ import 'package:habbit_tracker/firebase_options.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:habbit_tracker/push_notification_handler.dart';
+import 'package:habbit_tracker/stateful_wrapper.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,14 +42,17 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      initialRoute: '/',
-      onGenerateRoute: RouteGenerator.generateRoute,
-      debugShowCheckedModeBanner: false,
-      title: 'Habit Tracker',
-      theme: ThemeData(
-          colorSchemeSeed: const Color.fromARGB(255, 40, 54, 122),
-          useMaterial3: true),
+    return StatefulWrapper(
+      onInit: () => LocalPushNotification.initialize(),
+      child: MaterialApp(
+        initialRoute: '/',
+        onGenerateRoute: RouteGenerator.generateRoute,
+        debugShowCheckedModeBanner: false,
+        title: 'Habit Tracker',
+        theme: ThemeData(
+            colorSchemeSeed: const Color.fromARGB(255, 40, 54, 122),
+            useMaterial3: true),
+      ),
     );
   }
 }
