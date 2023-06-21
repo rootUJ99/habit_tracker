@@ -44,6 +44,7 @@ class _AddTodoState extends State<AddTodo> {
     'name': TextEditingController(),
     'description': TextEditingController(),
     'repeatTime': DateTime.now().microsecondsSinceEpoch,
+    'repeatTimeWithHourMin': TimeOfDay.now(),
     'duration': {
       'key': '1hour',
       'value': '1 hour',
@@ -63,6 +64,7 @@ class _AddTodoState extends State<AddTodo> {
       'name': _formControllers['name']!.text,
       'description': _formControllers['description']!.text,
       'repeatTime': _formControllers['repeatTime'],
+      'repeatTimeWithHourMin': _formControllers['repeatTimeWithHourMin'],
       'duration': _formControllers['duration']['key'],
       'id': widget.item?['id'] ?? UniqueKey().toString(),
     };
@@ -70,14 +72,10 @@ class _AddTodoState extends State<AddTodo> {
 
   void addHabit(CollectionReference habitsCol) {
     context.read<Habits>().addHabit(createHabitMap(), habitsCol);
-    LocalPushNotification.showNotification(
-        header: 'item added', body: 'habit has been added');
   }
 
   void editHabit(CollectionReference habitsCol) {
     context.read<Habits>().updateHabit(createHabitMap(), habitsCol);
-    LocalPushNotification.showNotification(
-        header: 'item updated', body: 'habit has been updated');
   }
 
   TimeOfDay convertToTimeofDay(String timeStampEpoch) {
@@ -171,6 +169,8 @@ class _AddTodoState extends State<AddTodo> {
                             setState(() {
                               _formControllers['repeatTime'] =
                                   convertToMicroseconds(selectedTimeRTL);
+                              _formControllers['repeatTimeWithHourMin'] =
+                                  selectedTimeRTL;
                             });
                           }
                         },
@@ -214,6 +214,7 @@ class _AddTodoState extends State<AddTodo> {
                       ${_formControllers['name']!.text}
                       ${_formControllers['description']!.text}
                       ${_formControllers['repeatTime']!.toString()}
+                      ${_formControllers['repeatTimeWithHourMin']}
                       ${_formControllers['duration']['key']}
                       ${_formControllers['id']}
                     """);

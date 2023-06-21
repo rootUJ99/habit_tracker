@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:habbit_tracker/push_notification_handler.dart';
 
 typedef DynamicMap = Map<String, dynamic>;
 
@@ -12,9 +14,17 @@ class Habits with ChangeNotifier, DiagnosticableTreeMixin {
   List<DynamicMap> get habits => _habits;
 
   void addHabit(DynamicMap item, CollectionReference habitCol) {
-    habitCol.doc(item['id']).set(
-        {...item, 'repeatTime': item['repeatTime'].toString()}).then((value) {
+    habitCol.doc(item['id']).set({
+      ...item,
+      'repeatTime': item['repeatTime'].toString(),
+      'repeatTimeWithHourMin': item['repeatTimeWithHourMin'].toString(),
+    }).then((value) {
       // _habits.add(item);
+      LocalPushNotification.scheduleDailyNotification(
+          header: item['name'],
+          body: item['description'],
+          hour: item['repeatTimeWithHourMin']!.hour,
+          min: item['repeatTimeWithHourMin']!.minute);
       notifyListeners();
     }).catchError((err) => print(err));
     // _habits.add(item);

@@ -7,12 +7,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:habbit_tracker/push_notification_handler.dart';
 import 'package:habbit_tracker/stateful_wrapper.dart';
+// import 'package:timezone/data/latest_all.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await LocalPushNotification.configureLocalTimeZone();
   FirebaseMessaging messaging = FirebaseMessaging.instance;
 
   NotificationSettings settings = await messaging.requestPermission(
