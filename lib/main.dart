@@ -45,7 +45,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StatefulWrapper(
-      onInit: () => LocalPushNotification.initialize(),
+      onInit: () {
+        LocalPushNotification();
+        // LocalPushNotification.initialize();
+      },
       child: MaterialApp(
         initialRoute: '/',
         onGenerateRoute: RouteGenerator.generateRoute,

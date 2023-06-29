@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:habbit_tracker/model/habit_model.dart';
 import 'package:habbit_tracker/provider/habit_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:habbit_tracker/push_notification_handler.dart';
 
 typedef ListMapString = List<Map<String, String>>;
 
@@ -10,7 +10,7 @@ typedef MapDynamic = Map<String, dynamic>;
 
 class AddTodo extends StatefulWidget {
   AddTodo({super.key, this.item});
-  Map<String, dynamic>? item;
+  HabitModel? item;
   @override
   _AddTodoState createState() => _AddTodoState();
 }
@@ -32,6 +32,14 @@ class _AddTodoState extends State<AddTodo> {
 
     return '$hourPeriod $min $period';
   }
+
+  final HabitModel habitModel = HabitModel.withTextControllers(
+    nameController: TextEditingController(),
+    descriptionController: TextEditingController(),
+    repeatTime: DateTime.now().microsecondsSinceEpoch,
+    repeatTimeWithHourMin: TimeOfDay.now(),
+    duration: DurationType.hour,
+  );
 
   final int defaultTime = DateTime.now().microsecondsSinceEpoch;
 
@@ -59,23 +67,19 @@ class _AddTodoState extends State<AddTodo> {
     {'key': '2hours', 'value': '2 hour'},
   ];
 
-  MapDynamic createHabitMap() {
+  MapDynamic createHabitMap(HabitModel? habitModal) {
     return {
-      'name': _formControllers['name']!.text,
-      'description': _formControllers['description']!.text,
-      'repeatTime': _formControllers['repeatTime'],
-      'repeatTimeWithHourMin': _formControllers['repeatTimeWithHourMin'],
-      'duration': _formControllers['duration']['key'],
-      'id': widget.item?['id'] ?? UniqueKey().toString(),
+      ...habitModal?.toJson(),
+      'id': widget.item?.id ?? UniqueKey().toString(),
     };
   }
 
-  void addHabit(CollectionReference habitsCol) {
-    context.read<Habits>().addHabit(createHabitMap(), habitsCol);
+  void addHabit(HabitModel habitModel, habitsCol) {
+    context.read<Habits>().addHabit(createHabitMap(habitModel), habitsCol);
   }
 
-  void editHabit(CollectionReference habitsCol) {
-    context.read<Habits>().updateHabit(createHabitMap(), habitsCol);
+  void editHabit(HabitModel habitModel, habitsCol) {
+    context.read<Habits>().updateHabit(createHabitMap(habitModel), habitsCol);
   }
 
   TimeOfDay convertToTimeofDay(String timeStampEpoch) {
@@ -97,20 +101,17 @@ class _AddTodoState extends State<AddTodo> {
   @override
   void initState() {
     super.initState();
-    _formControllers['name'].text = widget.item?['name'] ?? '';
-    _formControllers['description'].text = widget.item?['description'] ?? '';
-    _formControllers['repeatTime'] = widget.item?['repeatTime'] ?? defaultTime;
-    _formControllers['duration'] = _duration.firstWhere(
-      (it) => it['key'] == widget.item?['duration'],
-      orElse: () => defaultDuration,
-    );
+    if (widget.item == null) return;
+    habitModel.name = widget.item?.name ?? '';
+    habitModel.description = widget.item?.description ?? '';
+    habitModel.nameController!.text = widget.item?.name ?? '';
+    habitModel.descriptionController!.text = widget.item?.description ?? '';
+    habitModel.repeatTime = widget.item?.repeatTime ?? defaultTime;
+    habitModel.duration = widget.item?.duration ?? DurationType.hour;
   }
 
   @override
   Widget build(BuildContext context) {
-    // if (widget.item != null && widget.item!.containsKey('name')) {
-    // print('${widget.item?['name']}');
-    // }
     CollectionReference habits =
         FirebaseFirestore.instance.collection('habits');
 
@@ -129,7 +130,8 @@ class _AddTodoState extends State<AddTodo> {
                 // mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   TextFormField(
-                    controller: _formControllers['name'],
+                    controller: habitModel.nameController,
+                    onChanged: (value) => habitModel.name = value,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'habit name',
@@ -140,7 +142,8 @@ class _AddTodoState extends State<AddTodo> {
                   ),
                   TextFormField(
                     maxLines: 3,
-                    controller: _formControllers['description'],
+                    controller: habitModel.descriptionController,
+                    onChanged: (value) => habitModel.description = value,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'description',
@@ -157,7 +160,7 @@ class _AddTodoState extends State<AddTodo> {
                               TimeOfDay? selectedTimeRTL = await showTimePicker(
                                 context: context,
                                 initialTime: convertToTimeofDay(
-                                    '${_formControllers['repeatTime']}'),
+                                    '${habitModel.repeatTime}'),
                                 initialEntryMode: TimePickerEntryMode.inputOnly,
                                 builder: (BuildContext context, Widget? child) {
                                   return Directionality(
@@ -169,15 +172,15 @@ class _AddTodoState extends State<AddTodo> {
                               print(selectedTimeRTL);
                               if (selectedTimeRTL != null) {
                                 setState(() {
-                                  _formControllers['repeatTime'] =
+                                  habitModel.repeatTime =
                                       convertToMicroseconds(selectedTimeRTL);
-                                  _formControllers['repeatTimeWithHourMin'] =
+                                  habitModel.repeatTimeWithHourMin =
                                       selectedTimeRTL;
                                 });
                               }
                             },
                             child: Text(
-                                'repeat weekly at ${convertToTimeofDay(_formControllers["repeatTime"].toString())}')),
+                                'repeat weekly at ${convertToTimeofDay(habitModel.repeatTime.toString())}')),
                       ),
                     ],
                   ),
@@ -192,15 +195,13 @@ class _AddTodoState extends State<AddTodo> {
                       ),
                       Wrap(
                         spacing: 5.0,
-                        children: _duration
+                        children: DurationType.values
                             .map((item) => ChoiceChip(
-                                  label: Text(item['value'].toString()),
-                                  selected: item['key'] ==
-                                      _formControllers['duration']['key'],
+                                  label: Text(item.value.toString()),
+                                  selected: item == habitModel.duration,
                                   onSelected: (value) {
-                                    setState(() {
-                                      _formControllers['duration'] = item;
-                                    });
+                                    habitModel.duration = item;
+                                    setState(() {});
                                   },
                                 ))
                             .toList(),
@@ -212,18 +213,10 @@ class _AddTodoState extends State<AddTodo> {
                   ),
                   ElevatedButton(
                       onPressed: () {
-                        print("""
-                          ${_formControllers['name']!.text}
-                          ${_formControllers['description']!.text}
-                          ${_formControllers['repeatTime']!.toString()}
-                          ${_formControllers['repeatTimeWithHourMin']}
-                          ${_formControllers['duration']['key']}
-                          ${_formControllers['id']}
-                        """);
                         if (widget.item != null) {
-                          editHabit(habits);
+                          editHabit(habitModel, habits);
                         } else {
-                          addHabit(habits);
+                          addHabit(habitModel, habits);
                         }
                         Navigator.pop(context);
                       },

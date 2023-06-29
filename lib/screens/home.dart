@@ -1,8 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:habbit_tracker/components/card.dart';
-import 'package:habbit_tracker/stateful_wrapper.dart';
-import 'package:habbit_tracker/push_notification_handler.dart';
+import 'package:habbit_tracker/model/habit_model.dart';
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
@@ -23,43 +22,46 @@ class MyHomePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text('My Habits')),
-      body: StatefulWrapper(
-        onInit: () => LocalPushNotification.isAndroidPermissionGranted(),
-        child: Container(
-          margin: const EdgeInsets.all(10.0),
-          // mainAxisAlignment: MainAxisAlignment.center,
-          child: StreamBuilder<QuerySnapshot>(
-              stream: habitsSnap,
-              builder: (BuildContext context,
-                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (snapshot.hasError ||
-                    snapshot.connectionState == ConnectionState.waiting) {
-                  return const Text('no no');
-                }
-                print(
-                    '${snapshot.data?.docs.map((e) => e.data())} this is data');
-                return (ListView(
-                  children: [
-                    Column(
-                      children:
-                          snapshot.data?.docs.map((DocumentSnapshot document) {
-                        Map<String, dynamic> item =
-                            document.data()! as Map<String, dynamic>;
-                        return HabitCard(
-                          name: item['name'] ?? '',
-                          description: item['description'] ?? '',
-                          repeatTime:
-                              convertToTimeOfDay(item['repeatTime'] ?? ''),
-                          duration: item['duration'] ?? '',
-                          onTap: () => Navigator.pushNamed(context, '/add',
-                              arguments: item),
-                        );
-                      }).toList() as List<Widget>,
-                    )
-                  ],
-                ));
-              }),
-        ),
+      body: Container(
+        margin: const EdgeInsets.all(10.0),
+        // mainAxisAlignment: MainAxisAlignment.center,
+        child: StreamBuilder<QuerySnapshot>(
+            stream: habitsSnap,
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.hasError ||
+                  snapshot.connectionState == ConnectionState.waiting) {
+                return const Text('no no');
+              }
+              print('${snapshot.data?.docs.map((e) => e.data())} this is data');
+              return (ListView(
+                children: [
+                  Column(
+                    children:
+                        snapshot.data?.docs.map((DocumentSnapshot document) {
+                      Map<String, dynamic> item =
+                          document.data()! as Map<String, dynamic>;
+                      HabitModel habit = HabitModel.fromJson({
+                        ...item,
+                        'repeatTime': int.parse(item['repeatTime'] ?? '0'),
+                        'repeatTimeWithHourMin':
+                            convertToTimeOfDay(item['repeatTime'] ?? ''),
+                      });
+                      print('this is habit $habit');
+                      return HabitCard(
+                        name: item['name'] ?? '',
+                        description: item['description'] ?? '',
+                        repeatTime:
+                            convertToTimeOfDay(item['repeatTime'] ?? ''),
+                        duration: item['duration'] ?? '',
+                        onTap: () => Navigator.pushNamed(context, '/add',
+                            arguments: {'item': habit}),
+                      );
+                    }).toList() as List<Widget>,
+                  )
+                ],
+              ));
+            }),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _incrementCounter,

@@ -7,6 +7,21 @@ import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 class LocalPushNotification {
+  static LocalPushNotification? _instance;
+
+  LocalPushNotification._inner() {
+    initialize();
+    isAndroidPermissionGranted();
+  }
+
+  factory LocalPushNotification() {
+    if (_instance != null) {
+      return _instance!;
+    }
+    _instance = LocalPushNotification._inner();
+    return _instance!;
+  }
+
   static const String navigationActionId = 'id_3';
   static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
@@ -25,7 +40,7 @@ class LocalPushNotification {
   }
 
   @pragma('vm:entry-point')
-  static void notificationTapBackground(
+  static void _notificationTapBackground(
       NotificationResponse notificationResponse) {
     // ignore: avoid_print
     print('notification(${notificationResponse.id}) action tapped: '
@@ -38,7 +53,7 @@ class LocalPushNotification {
     }
   }
 
-  static void notificationOnTap(NotificationResponse notificationResponse) {
+  static void _notificationOnTap(NotificationResponse notificationResponse) {
     switch (notificationResponse.notificationResponseType) {
       case NotificationResponseType.selectedNotification:
         selectNotificationStream.add(notificationResponse.payload);
@@ -51,7 +66,7 @@ class LocalPushNotification {
     }
   }
 
-  static void initialize() async {
+  void initialize() async {
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('launcher_icon');
 
@@ -61,12 +76,12 @@ class LocalPushNotification {
     );
     await flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
-      onDidReceiveNotificationResponse: notificationOnTap,
-      onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
+      onDidReceiveNotificationResponse: _notificationOnTap,
+      onDidReceiveBackgroundNotificationResponse: _notificationTapBackground,
     );
   }
 
-  static Future<void> isAndroidPermissionGranted() async {
+  Future<void> isAndroidPermissionGranted() async {
     if (Platform.isAndroid) {
       final bool granted = await flutterLocalNotificationsPlugin
               .resolvePlatformSpecificImplementation<
@@ -101,7 +116,7 @@ class LocalPushNotification {
     return scheduledDate;
   }
 
-  static Future<void> scheduleDailyNotification(
+  Future<void> scheduleDailyNotification(
       {required String header,
       required String body,
       required int hour,

@@ -9,7 +9,7 @@ class RouteGenerator {
 
     switch (settings.name) {
       case '/add':
-        return MaterialPageRoute(builder: (_) => AddTodo(item: args));
+        return MaterialPageRoute(builder: (_) => AddTodo(item: args?['item']));
       case '/':
         // Validation of correct data type
         // if (args is List) {

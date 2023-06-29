@@ -20,7 +20,8 @@ class Habits with ChangeNotifier, DiagnosticableTreeMixin {
       'repeatTimeWithHourMin': item['repeatTimeWithHourMin'].toString(),
     }).then((value) {
       // _habits.add(item);
-      LocalPushNotification.scheduleDailyNotification(
+      LocalPushNotification pushNoti = LocalPushNotification();
+      pushNoti.scheduleDailyNotification(
           header: item['name'],
           body: item['description'],
           hour: item['repeatTimeWithHourMin']!.hour,
