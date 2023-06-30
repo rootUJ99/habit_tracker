@@ -43,30 +43,6 @@ class _AddTodoState extends State<AddTodo> {
 
   final int defaultTime = DateTime.now().microsecondsSinceEpoch;
 
-  final Map<String, String> defaultDuration = {
-    'key': '1hour',
-    'value': '1 hour',
-  };
-
-  final Map<String, dynamic> _formControllers = {
-    'name': TextEditingController(),
-    'description': TextEditingController(),
-    'repeatTime': DateTime.now().microsecondsSinceEpoch,
-    'repeatTimeWithHourMin': TimeOfDay.now(),
-    'duration': {
-      'key': '1hour',
-      'value': '1 hour',
-    },
-  };
-
-  final ListMapString _duration = [
-    {'key': '15mins', 'value': '15 mins'},
-    {'key': '30mins', 'value': '30 mins'},
-    {'key': '1hour', 'value': '1 hour'},
-    {'key': '1.5hour', 'value': '1.5 hour'},
-    {'key': '2hours', 'value': '2 hour'},
-  ];
-
   MapDynamic createHabitMap(HabitModel? habitModal) {
     return {
       ...habitModal?.toJson(),

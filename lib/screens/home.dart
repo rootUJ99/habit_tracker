@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:habbit_tracker/components/card.dart';
+import 'package:habbit_tracker/widgets/habit_card.dart';
 import 'package:habbit_tracker/model/habit_model.dart';
 
 class MyHomePage extends StatelessWidget {
