@@ -32,16 +32,22 @@ class Habits with ChangeNotifier, DiagnosticableTreeMixin {
   }
 
   void updateHabit(DynamicMap item, CollectionReference habitCol) {
-    habitCol
-        .doc(item['id'])
-        .set({...item, 'repeatTime': item['repeatTime'].toString()})
-        .then((value) {})
-        .catchError((err) => print(err));
+    habitCol.doc(item['id']).set(
+        {...item, 'repeatTime': item['repeatTime'].toString()}).then((value) {
+      notifyListeners();
+    }).catchError((err) => print(err));
 
     // int index = _habits.indexWhere((element) => element['id'] == item['id']);
     // _habits.removeAt(index);
     // _habits.insert(index, item);
-    notifyListeners();
+  }
+
+  void deleteHabit(
+      DynamicMap item, CollectionReference habitCol, Function callback) {
+    habitCol.doc(item['id']).delete().then((value) {
+      notifyListeners();
+      callback();
+    }).catchError((err) => print(err));
   }
 
   /// Makes `Counter` readable inside the devtools by listing all of its properties

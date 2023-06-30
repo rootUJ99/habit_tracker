@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:habbit_tracker/model/habit_model.dart';
 import 'package:habbit_tracker/provider/habit_provider.dart';
+import 'package:habbit_tracker/widgets/button.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -58,6 +59,11 @@ class _AddTodoState extends State<AddTodo> {
     context.read<Habits>().updateHabit(createHabitMap(habitModel), habitsCol);
   }
 
+  void deleteHabit(HabitModel habitModel, habitsCol) {
+    context.read<Habits>().deleteHabit(
+        createHabitMap(habitModel), habitsCol, () => Navigator.pop(context));
+  }
+
   TimeOfDay convertToTimeofDay(String timeStampEpoch) {
     // if (timeStampEpoch is String) {
     int ts = int.parse(timeStampEpoch);
@@ -95,6 +101,15 @@ class _AddTodoState extends State<AddTodo> {
       // resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('add habit'),
+        actions: [
+          Container(
+            margin: const EdgeInsets.only(right: 10),
+            child: IconButton(
+              onPressed: () => deleteHabit(habitModel, habits),
+              icon: const Icon(Icons.delete),
+            ),
+          ),
+        ],
       ),
       body: ListView(
         children: [
