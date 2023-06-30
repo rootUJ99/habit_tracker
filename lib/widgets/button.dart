@@ -15,8 +15,6 @@ class Button extends StatelessWidget {
     return ElevatedButton(
       onPressed: () => onPressed(),
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(Colors.purple),
-        foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(50.0))),
       ),

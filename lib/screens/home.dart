@@ -20,8 +20,26 @@ class MyHomePage extends StatelessWidget {
       return TimeOfDay.fromDateTime(dT);
     }
 
+    // IconButton checkTheme() {
+    //   return Theme.of(context).brightness == Brightness.dark
+    //       ? IconButton(
+    //           icon: const Icon(Icons.sunny),
+    //           onPressed: () => Theme.of(context).brightness = Brightness.light,
+    //         )
+    //       : IconButton(
+    //           icon: const Icon(Icons.nightlight_round),
+    //           onPressed: () => print('dark'),
+    //         );
+    // }
+
     return Scaffold(
-      appBar: AppBar(title: const Text('My Habits')),
+      // backgroundColor: Theme.of(context).primaryColorLight,
+      appBar: AppBar(
+        title: const Text('My Habits'),
+        actions: [
+          // checkTheme(),
+        ],
+      ),
       body: Container(
         margin: const EdgeInsets.all(10.0),
         // mainAxisAlignment: MainAxisAlignment.center,

@@ -24,8 +24,9 @@ class RouteGenerator {
   }
 
   static Route<dynamic> _errorRoute() {
-    return MaterialPageRoute(builder: (_) {
+    return MaterialPageRoute(builder: (context) {
       return Scaffold(
+        backgroundColor: Theme.of(context).secondaryHeaderColor,
         appBar: AppBar(
           title: const Text('Error'),
         ),

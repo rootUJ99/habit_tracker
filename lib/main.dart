@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:habbit_tracker/provider/habit_provider.dart';
 import 'package:habbit_tracker/routes.dart';
 import 'package:habbit_tracker/firebase_options.dart';
@@ -8,6 +9,13 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:habbit_tracker/push_notification_handler.dart';
 import 'package:habbit_tracker/stateful_wrapper.dart';
 // import 'package:timezone/data/latest_all.dart';
+
+final ColorScheme kColorScheme =
+    ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 40, 54, 122));
+
+final ColorScheme kColorSchemeDark = ColorScheme.fromSeed(
+    brightness: Brightness.dark,
+    seedColor: const Color.fromARGB(255, 42, 48, 76));
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,6 +35,8 @@ void main() async {
     sound: true,
   );
   print('User granted permission: ${settings.authorizationStatus}');
+
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   runApp(
     MultiProvider(
@@ -54,9 +64,8 @@ class MyApp extends StatelessWidget {
         onGenerateRoute: RouteGenerator.generateRoute,
         debugShowCheckedModeBanner: false,
         title: 'Habit Tracker',
-        theme: ThemeData(
-            colorSchemeSeed: const Color.fromARGB(255, 40, 54, 122),
-            useMaterial3: true),
+        darkTheme: ThemeData(colorScheme: kColorSchemeDark, useMaterial3: true),
+        theme: ThemeData(colorScheme: kColorScheme, useMaterial3: true),
       ),
     );
   }
