@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -13,15 +15,32 @@ class Habits with ChangeNotifier, DiagnosticableTreeMixin {
 
   List<DynamicMap> get habits => _habits;
 
+  List<int>? _notificationIds = [];
+
+  int _generateRandomId() {
+    int randomId = Random().nextInt(500);
+    if (_notificationIds!.contains(randomId)) {
+      _generateRandomId();
+    }
+    return randomId;
+  }
+
+  void setNotificationIds(List<int>? inputNotificationListIds) {
+    _notificationIds = inputNotificationListIds;
+  }
+
   void addHabit(DynamicMap item, CollectionReference habitCol) {
+    int intId = _generateRandomId();
     habitCol.doc(item['id']).set({
       ...item,
+      'intId': intId,
       'repeatTime': item['repeatTime'].toString(),
       'repeatTimeWithHourMin': item['repeatTimeWithHourMin'].toString(),
     }).then((value) {
       // _habits.add(item);
       LocalPushNotification pushNoti = LocalPushNotification();
       pushNoti.scheduleDailyNotification(
+          intId: intId,
           header: item['name'],
           body: item['description'],
           hour: item['repeatTimeWithHourMin']!.hour,
@@ -32,8 +51,17 @@ class Habits with ChangeNotifier, DiagnosticableTreeMixin {
   }
 
   void updateHabit(DynamicMap item, CollectionReference habitCol) {
+    LocalPushNotification pushNoti = LocalPushNotification();
+    pushNoti.cancelNotification(intId: item['intId']);
     habitCol.doc(item['id']).set(
         {...item, 'repeatTime': item['repeatTime'].toString()}).then((value) {
+      pushNoti.scheduleDailyNotification(
+          intId: item['intId'],
+          header: item['name'],
+          body: item['description'],
+          hour: item['repeatTimeWithHourMin']!.hour,
+          min: item['repeatTimeWithHourMin']!.minute);
+
       notifyListeners();
     }).catchError((err) => print(err));
 
@@ -44,8 +72,10 @@ class Habits with ChangeNotifier, DiagnosticableTreeMixin {
 
   void deleteHabit(
       DynamicMap item, CollectionReference habitCol, Function callback) {
+    LocalPushNotification pushNoti = LocalPushNotification();
     habitCol.doc(item['id']).delete().then((value) {
       notifyListeners();
+      pushNoti.cancelNotification(intId: item['intId']);
       callback();
     }).catchError((err) => print(err));
   }

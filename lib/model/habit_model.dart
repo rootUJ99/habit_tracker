@@ -20,6 +20,7 @@ class HabitModel {
   TextEditingController? nameController;
   TextEditingController? descriptionController;
   String? id;
+  int? intId;
 
   HabitModel({
     required this.name,
@@ -28,6 +29,7 @@ class HabitModel {
     required this.repeatTimeWithHourMin,
     required this.duration,
     this.id,
+    this.intId,
   });
 
   HabitModel.withTextControllers({
@@ -37,6 +39,7 @@ class HabitModel {
     required this.nameController,
     required this.descriptionController,
     this.id,
+    this.intId,
   }) {
     name = nameController!.text;
     description = descriptionController!.text;
@@ -48,6 +51,7 @@ class HabitModel {
         repeatTime = json['repeatTime'] as int?,
         repeatTimeWithHourMin = json['repeatTimeWithHourMin'],
         id = json['id'],
+        intId = json['intId'],
         duration = DurationType.values
             .firstWhere((element) => element.value == json['duration']);
   toJson() {
@@ -58,6 +62,7 @@ class HabitModel {
       'repeatTimeWithHourMin': repeatTimeWithHourMin.toString(),
       'duration': duration!.value,
       'id': id,
+      'intId': intId,
     };
   }
 

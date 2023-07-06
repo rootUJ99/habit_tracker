@@ -116,13 +116,15 @@ class LocalPushNotification {
     return scheduledDate;
   }
 
-  Future<void> scheduleDailyNotification(
-      {required String header,
-      required String body,
-      required int hour,
-      required int min}) async {
+  Future<void> scheduleDailyNotification({
+    required String header,
+    required String body,
+    required int hour,
+    required int min,
+    required int intId,
+  }) async {
     await flutterLocalNotificationsPlugin.zonedSchedule(
-        0,
+        intId,
         header,
         body,
         _nextInstanceOfTime(hour, min),
@@ -135,5 +137,9 @@ class LocalPushNotification {
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
         matchDateTimeComponents: DateTimeComponents.time);
+  }
+
+  Future<void> cancelNotification({required int intId}) async {
+    await flutterLocalNotificationsPlugin.cancel(intId);
   }
 }
