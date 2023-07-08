@@ -14,15 +14,7 @@ class _StatefulWrapperState extends State<StatefulWrapper> {
   void initState() {
     if (widget.onInit != null) {
       widget.onInit!();
-      print('-------- its happening -------');
-      print('-------- its happening -------');
-      print('-------- its happening -------');
-      print('-------- its happening -------');
-      print('-------- its happening -------');
-      print('-------- its happening -------');
     }
-    print('-------- its happening but over here-------');
-
     super.initState();
   }
 
