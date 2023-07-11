@@ -142,4 +142,11 @@ class LocalPushNotification {
   Future<void> cancelNotification({required int intId}) async {
     await flutterLocalNotificationsPlugin.cancel(intId);
   }
+
+  Future<void> listPendingNotifications() async {
+    List<PendingNotificationRequest> requests =
+        await flutterLocalNotificationsPlugin.pendingNotificationRequests();
+    print('length ----- ${requests.length}');
+    requests.map((e) => print('${e.title} ----> titile'));
+  }
 }

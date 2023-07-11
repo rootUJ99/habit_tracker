@@ -52,9 +52,12 @@ class Habits with ChangeNotifier, DiagnosticableTreeMixin {
 
   void updateHabit(DynamicMap item, CollectionReference habitCol) {
     LocalPushNotification pushNoti = LocalPushNotification();
-    pushNoti.cancelNotification(intId: item['intId']);
-    habitCol.doc(item['id']).set(
-        {...item, 'repeatTime': item['repeatTime'].toString()}).then((value) {
+    habitCol.doc(item['id']).set({
+      ...item,
+      'repeatTime': item['repeatTime'].toString(),
+      'repeatTimeWithHourMin': item['repeatTimeWithHourMin'].toString(),
+    }).then((value) {
+      pushNoti.cancelNotification(intId: item['intId']);
       pushNoti.scheduleDailyNotification(
           intId: item['intId'],
           header: item['name'],

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:habbit_tracker/push_notification_handler.dart';
 import 'package:habbit_tracker/stateful_wrapper.dart';
 import 'package:habbit_tracker/widgets/habit_card.dart';
 import 'package:habbit_tracker/model/habit_model.dart';
@@ -45,7 +46,10 @@ class MyHomePage extends StatelessWidget {
       ),
       body: StatefulWrapper(
         onInit: () async {
-          habitsSnap.asyncMap((event) => print(event as Map<String, dynamic>));
+          // print('----this are notification instances ----');
+          // LocalPushNotification noti = LocalPushNotification();
+          // noti.listPendingNotifications();
+          // print('----end of notification instnaces---');
         },
         child: Container(
           margin: const EdgeInsets.all(10.0),
@@ -80,7 +84,7 @@ class MyHomePage extends StatelessWidget {
                           'repeatTimeWithHourMin':
                               convertToTimeOfDay(item['repeatTime'] ?? ''),
                         });
-                        print('this is habit $habit');
+                        // print('this is habit $habit');
                         return HabitCard(
                           name: item['name'] ?? '',
                           description: item['description'] ?? '',

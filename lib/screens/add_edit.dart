@@ -48,6 +48,7 @@ class _AddTodoState extends State<AddTodo> {
     return {
       ...habitModal?.toJson(),
       'id': widget.item?.id ?? UniqueKey().toString(),
+      'repeatTimeWithHourMin': habitModal?.repeatTimeWithHourMin
     };
   }
 
@@ -89,6 +90,7 @@ class _AddTodoState extends State<AddTodo> {
     habitModel.nameController!.text = widget.item?.name ?? '';
     habitModel.descriptionController!.text = widget.item?.description ?? '';
     habitModel.repeatTime = widget.item?.repeatTime ?? defaultTime;
+    habitModel.intId = widget.item?.intId;
     habitModel.duration = widget.item?.duration ?? DurationType.hour;
   }
 
