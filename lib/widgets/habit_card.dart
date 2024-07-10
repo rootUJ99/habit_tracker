@@ -23,6 +23,16 @@ class HabitCard extends StatelessWidget {
     return '$hourPeriod $min $period';
   }
 
+  void startTimer(TimeOfDay time) {
+    // final timer = Future.delayed(Duration(hours: time.hour, minutes: time.minute));
+    final timer = Future.delayed(const Duration(seconds: 5));
+    final sub = timer.asStream().listen((event) {
+      print("hellow from pit");
+    });
+
+    // sub.cancel();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -53,14 +63,25 @@ class HabitCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Chip(
-                          avatar: const Icon(Icons.timelapse),
-                          label: Text(getTime(repeatTime))),
-                      const SizedBox(width: 10),
-                      Chip(
-                          avatar: const Icon(Icons.repeat),
-                          label: Text(duration)),
+                      Row(
+                        children: [
+                          Chip(
+                              avatar: const Icon(Icons.timelapse),
+                              label: Text(getTime(repeatTime))),
+                          const SizedBox(width: 10),
+                          Chip(
+                              avatar: const Icon(Icons.repeat),
+                              label: Text(duration)),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 0, 20, 20),
+                        child: IconButton.filled(
+                            onPressed: () => startTimer(repeatTime),
+                            icon: const Icon(Icons.play_arrow_rounded)),
+                      )
                     ],
                   ),
                 ],
